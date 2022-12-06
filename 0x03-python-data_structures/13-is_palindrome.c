@@ -1,33 +1,35 @@
 #include "lists.h"
 
 /**
- * is_palindrome - function to call check_pal to see if list is palindrome
- * @head: ptr to the beginning of the list
- * Return: 0 if not palindrome else 1
+ * recurPalindrome - checks if singly linked list is palindrome
+ * @left: pointer to head of singly linked list
+ * @right: head of singly linked list
+ * Return: 0 if it is not a palindrome, 1 if it is a palindrome
+ */
+
+int recurPalindrome(listint_t **left, listint_t *right)
+{
+	int ret;
+
+	if (right == NULL)
+		return (1);
+	ret = recurPalindrome(left, right->next);
+	if (ret == 0)
+		return (0);
+	ret = (right->n == (*left)->n);
+	*left = (*left)->next;
+	return (ret);
+}
+
+/**
+ * is_palindrome - checks if singly linked list is palindrome
+ * @head: pointer to head of singly linked list
+ * Return: 0 if it is not a palindrome, 1 if it is a palindrome
  */
 
 int is_palindrome(listint_t **head)
 {
-	if (head == NULL || *head == NULL)
-		return (1);
-	return (check_pal(head, *head));
-}
-
-/**
- * check_pal - function to check if the list is palindrome
- * @head: ptr to the beginning of the list
- * @last: ptr to the end of the list
- * Return: 0 if not palindrom else 1
- */
-
-int check_pal(listint_t **head, listint_t *last)
-{
-	if (last == NULL)
-		return (1);
-	if (check_pal(head, last->next) && (*head)->n == last->n)
-	{
-		*head = (*head)->next;
-		return (1);
-	}
-	return (0);
+	if (!head)
+		return (0);
+	return (recurPalindrome(head, *head));
 }
